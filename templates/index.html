@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% block content %}
+<center>
+    <p class="text">Object Detection</p>
+    <p>Upload an image to see object detection
+    <div class="upload-form">
+      <form action = "/uploader" method = "POST" 
+        enctype = "multipart/form-data">
+        <input type = "file" name = "file" />
+        <input type = "submit"/>
+      </form>
+    </div>
+    <div>
+        <img src="../detections/kite.jpg" alt="">
+    </div>
+</center> 
+{% endblock %}
