@@ -6,11 +6,18 @@
       <form action = "/uploader" method = "POST" 
         enctype = "multipart/form-data">
         <input type = "file" name = "file" />
-        <input type = "submit"/>
+        <input id="btn-detect" type = "submit" value="Detect"/>
       </form>
     </div>
-    <div>
-        <img src="../detections/kite.jpg" alt="">
+    <div class="row">
+      <div id="loader" class="five">
+        <div class="line"></div>
+        <div class="line"></div>
+      </div>
     </div>
+    <!-- <div>
+        <img src="../static/images/dog.jpg" alt="">
+    </div> -->
+    <script src="../static/js/script.js"></script>
 </center> 
 {% endblock %}

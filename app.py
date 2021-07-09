@@ -17,7 +17,8 @@ def upload_file():
         filename = secure_filename(f.filename)
         print(filename)
         # save file to /static/uploads
-        basepath = os.path.dirname(__file__)
+        basepath = os.path.dirname(__file__) + '\static'
+        print(basepath)
         filepath = os.path.join( basepath, 'uploads', filename)
         print(filepath)
         f.save(filepath)
