@@ -1,23 +1,37 @@
-{% extends "base.html" %}{% block content %}
+{% extends "base.html" %}
+{% block head %}<title>Object Detection</title>{% endblock %}
+
+{% block content %}
 <center>
-    <p class="text">Object Detection</p>
-    <p>Upload an image to see object detection
-    <div class="upload-form">
-      <form action = "/uploader" method = "POST" 
-        enctype = "multipart/form-data">
-        <input type = "file" name = "file" />
-        <input id="btn-detect" type = "submit" value="Detect"/>
-      </form>
+    <div class="jumbotron my-auto bg-light">
+        <h1 class="display-3"><b>Object Detection</b></h1>
+        <p class="lead">Upload an image to see object detection</p>
+        <hr class="my-4">
+        <div class="card col-sm-6 bg-light card-wrap">
+            <div class="card-body ">
+                <div class="upload-form">
+                    <form action = "/uploader" method = "POST"
+                        enctype = "multipart/form-data" class="d-flex flex-column justify-content-center align-items-center">
+                        <div class="mx-auto mt-3 mb-4">
+                            <input id="btn-choose" type = "file" name = "file" />
+                        </div>
+                        
+                        <div class="">
+                            <input name="" id="btn-detect" class="btn btn-success btn-lg rounded-pill" type="submit" value="Detect">
+                        </div>
+                    </form>
+                </div>
+                
+            </div>
+        </div>
     </div>
-    <div class="row">
-      <div id="loader" class="five">
-        <div class="line"></div>
-        <div class="line"></div>
-      </div>
+    <div class="row mx-auto">
+        <div class="col-12">
+        <div id="loader" class="five">
+            <div class="line"></div>
+            <div class="line"></div>
+        </div>
+        </div>
     </div>
-    <!-- <div>
-        <img src="../static/images/dog.jpg" alt="">
-    </div> -->
-    <script src="../static/js/script.js"></script>
 </center> 
 {% endblock %}

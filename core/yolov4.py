@@ -8,7 +8,7 @@ import core.common as common
 import core.backbone as backbone
 from core.config import cfg
 
-# NUM_CLASS       = len(utils.read_class_names(cfg.YOLO.CLASSES))
+#NUM_CLASS       = len(utils.read_class_names(cfg.YOLO.CLASSES))
 # STRIDES         = np.array(cfg.YOLO.STRIDES)
 # IOU_LOSS_THRESH = cfg.YOLO.IOU_LOSS_THRESH
 # XYSCALE = cfg.YOLO.XYSCALE

@@ -5,6 +5,15 @@ import numpy as np
 import tensorflow as tf
 from core.config import cfg
 
+def change_class_name():
+    model_type = -1
+    with open("./data/model_type.txt", 'r') as f:
+        model_type = int(f.read())
+
+    if(model_type == 0):
+        return "./data/classes/coco.names"
+    elif (model_type == 1):
+        return "./data/classes/yolo.names"
 
 def load_freeze_layer(model='yolov4', tiny=False):
     if tiny:
@@ -74,6 +83,8 @@ def load_weights(model, weights_file, model_name='yolov4', is_tiny=False):
 
 
 def read_class_names(class_file_name):
+    class_file_name = change_class_name()
+
     names = {}
     with open(class_file_name, 'r') as data:
         for ID, name in enumerate(data):
@@ -98,6 +109,7 @@ def load_config(FLAGS):
         elif model == 'yolov3':
             ANCHORS = get_anchors(cfg.YOLO.ANCHORS_V3, tiny)
         XYSCALE = cfg.YOLO.XYSCALE if model == 'yolov4' else [1, 1, 1]
+    
     NUM_CLASS = len(read_class_names(cfg.YOLO.CLASSES))
 
     return STRIDES, ANCHORS, NUM_CLASS, XYSCALE
@@ -130,8 +142,11 @@ def image_preprocess(image, target_size, gt_boxes=None):
         gt_boxes[:, [0, 2]] = gt_boxes[:, [0, 2]] * scale + dw
         gt_boxes[:, [1, 3]] = gt_boxes[:, [1, 3]] * scale + dh
         return image_paded, gt_boxes
-
+#
 def draw_bbox(image, bboxes, classes=read_class_names(cfg.YOLO.CLASSES), show_label=True):
+    cfg.YOLO.CLASSES = change_class_name()
+    classes =read_class_names(cfg.YOLO.CLASSES)
+
     num_classes = len(classes)
     image_h, image_w, _ = image.shape
     hsv_tuples = [(1.0 * x / num_classes, 1., 1.) for x in range(num_classes)]

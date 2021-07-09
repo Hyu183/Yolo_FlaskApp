@@ -9,6 +9,9 @@ import tensorflow as tf
 import core.utils as utils
 from core.config import cfg
 
+#from app import model_type,change_class_name
+
+
 
 class Dataset(object):
     """implement Dataset here"""
@@ -30,6 +33,8 @@ class Dataset(object):
         self.data_aug = cfg.TRAIN.DATA_AUG if is_training else cfg.TEST.DATA_AUG
 
         self.train_input_sizes = cfg.TRAIN.INPUT_SIZE
+        #####################################
+        cfg.YOLO.CLASSES = utils.change_class_name()
         self.classes = utils.read_class_names(cfg.YOLO.CLASSES)
         self.num_classes = len(self.classes)
         self.anchor_per_scale = cfg.YOLO.ANCHOR_PER_SCALE

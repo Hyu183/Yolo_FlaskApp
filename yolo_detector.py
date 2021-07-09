@@ -2,10 +2,8 @@ import tensorflow as tf
 physical_devices = tf.config.experimental.list_physical_devices('GPU')
 if len(physical_devices) > 0:
     tf.config.experimental.set_memory_growth(physical_devices[0], True)
-#from absl import app, flags, logging
 from absl.flags import FLAGS
 import core.utils as utils
-#from core.yolov4 import filter_boxes
 from tensorflow.python.saved_model import tag_constants
 
 import cv2
@@ -25,10 +23,12 @@ output='./static/detections/'  #path to output folder
 weights_loaded="./checkpoints/yolov4-tf-416"
 
 # load model
-saved_model_loaded = tf.saved_model.load(weights_loaded, tags=[tag_constants.SERVING])
-print('model loaded')
+def load_yolo_model():
+    model = tf.saved_model.load(weights_loaded, tags=[tag_constants.SERVING])
+    print('-------------------------------Model Yolov4 Loaded-------------------------------')
+    return model
 
-def yolo_detector(image_path,image_name):
+def yolo_detector(image_path,image_name,model):
     image_size=416
     imput_image=image_path
     config = ConfigProto()
@@ -50,7 +50,7 @@ def yolo_detector(image_path,image_name):
         images_data.append(image_data)
     images_data = np.asarray(images_data).astype(np.float32)
 
-    infer = saved_model_loaded.signatures['serving_default']
+    infer = model.signatures['serving_default']
     batch_data = tf.constant(images_data)
     pred_bbox = infer(batch_data)
     for key, value in pred_bbox.items():
@@ -68,23 +68,7 @@ def yolo_detector(image_path,image_name):
     )
     pred_bbox = [boxes.numpy(), scores.numpy(), classes.numpy(), valid_detections.numpy()]
     image = utils.draw_bbox(original_image, pred_bbox)
-    #cropped_image = utils.draw_bbox(original_image, pred_bbox)
-    # image = utils.draw_bbox(image_data*255, pred_bbox)
-
-    #image = Image.fromarray(image.astype(np.uint8))
-    #if not FLAGS.dont_show:
-        #image.show()
     image = cv2.cvtColor(np.array(image), cv2.COLOR_BGR2RGB)
 
     cv2.imwrite(output + image_name, image)
     return image
-
-
-# def getUrl(image_path):
-#     glass_image=glass_detector(image_path)  
-#     image_here="D:\\Glass Final\\detections\\DetectedGlass1.jpg"
-#     dst_here="static\\similar_images\\"
-#     shutil.copy(image_here, dst_here, follow_symlinks=True)
-#     print("Glass image detected............")
-#     os.remove("./detections/DetectedGlass1.jpg")
-#     return glass_image
